@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<instance>
+    <process id="LoanProcessTesting">
+        <sequence id="Seq1">
+            <task id="Loan_Request" unctrl_res="Alice, Bob"/>
+            <loop 
+                id="Loop1"
+                repeat="renegotiate"
+                ctrl_repeat="false"
+                exit="confirm"
+                ctrl_exit="false"
+            >
+               <sequence id="Seq2">
+                   <task id="Process_Request" ctrl_res="Charlie, David"/>
+                   <xor 
+                        id="Xor1"
+                        unctrl_branch="high_amount, medium_amount"
+                        default="low_amount"
+                        ctrl_default="false"
+                    >
+                        <task id="Anti_Money_Laundering_Assesment" unctrl_res="Evie, Frank"/>
+                        <task id="Tax_Fraud_Assesment" unctrl_res="Charlie, Gary, Hannah"/>
+                   </xor> 
+                  <task id="Assesment_Notification" ctrl_res="Charlie, David" unctrl_res="Ian, Lucille"/> 
+               </sequence> 
+               <task id="Renegotiate_Loan" ctrl_res="Alice, Bob"/>
+            </loop>
+            <task id="Decision" ctrl_res="Ian, Lucille"/>
+            <xor 
+                id="Xor2"
+                ctrl_branch="accept, reject"
+            >
+                <and id="And1">
+                    <task id="Open_Credit_Line" unctrl_res="Charlie, David"/>
+                    <task id="Accept_Notification" ctrl_res="Charlie, David"/>
+                </and>
+                <task id="Reject_Notification" ctrl_res="Charlie, David"/>
+            </xor>
+            <task id="Log_Result" ctrl_res="Ian, Lucille"/>
+        </sequence> 
+    </process>
+    <constraints>
+        <property id="RELATIVE">(Evie, Mark)</property>
+        <tcc>Loan_Request = Renegotiate_Loan</tcc>
+        <tcc>Tax_Fraud_Assesment != Assesment_Notification</tcc>
+        <tcc>Anti_Money_Laundering_Assesment !RELATIVE Assesment_Notification</tcc>
+        <tcc>Open_Credit_Line = Accept_Notification</tcc>
+        <tcc>Decision = Log_Result</tcc>
+        <ccc>Alice lessThan 2</ccc>
+        <ccc>Charlie lessThanOrEqualTo 4</ccc>
+        <ccc>David lessThanOrEqualTo 2</ccc>
+    </constraints>
+</instance>

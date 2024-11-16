@@ -1,0 +1,239 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> property
+Rule 1     property -> list optproperty
+Rule 2     optproperty -> empty
+Rule 3     optproperty -> property
+Rule 4     list -> tuple opttuple
+Rule 5     opttuple -> COMMA tuple opttuple
+Rule 6     opttuple -> empty
+Rule 7     tuple -> LPAR NAME COMMA NAME optresname RPAR
+Rule 8     optresname -> COMMA NAME optresname
+Rule 9     optresname -> empty
+Rule 10    empty -> <empty>
+
+Terminals, with rules where they appear
+
+COMMA                : 5 7 8
+LPAR                 : 7
+NAME                 : 7 7 8
+RPAR                 : 7
+error                : 
+
+Nonterminals, with rules where they appear
+
+empty                : 2 6 9
+list                 : 1
+optproperty          : 1
+optresname           : 7 8
+opttuple             : 4 5
+property             : 3 0
+tuple                : 4 5
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . property
+    (1) property -> . list optproperty
+    (4) list -> . tuple opttuple
+    (7) tuple -> . LPAR NAME COMMA NAME optresname RPAR
+
+    LPAR            shift and go to state 4
+
+    property                       shift and go to state 1
+    list                           shift and go to state 2
+    tuple                          shift and go to state 3
+
+state 1
+
+    (0) S' -> property .
+
+
+
+state 2
+
+    (1) property -> list . optproperty
+    (2) optproperty -> . empty
+    (3) optproperty -> . property
+    (10) empty -> .
+    (1) property -> . list optproperty
+    (4) list -> . tuple opttuple
+    (7) tuple -> . LPAR NAME COMMA NAME optresname RPAR
+
+    $end            reduce using rule 10 (empty -> .)
+    LPAR            shift and go to state 4
+
+    list                           shift and go to state 2
+    optproperty                    shift and go to state 5
+    empty                          shift and go to state 6
+    property                       shift and go to state 7
+    tuple                          shift and go to state 3
+
+state 3
+
+    (4) list -> tuple . opttuple
+    (5) opttuple -> . COMMA tuple opttuple
+    (6) opttuple -> . empty
+    (10) empty -> .
+
+    COMMA           shift and go to state 9
+    LPAR            reduce using rule 10 (empty -> .)
+    $end            reduce using rule 10 (empty -> .)
+
+    opttuple                       shift and go to state 8
+    empty                          shift and go to state 10
+
+state 4
+
+    (7) tuple -> LPAR . NAME COMMA NAME optresname RPAR
+
+    NAME            shift and go to state 11
+
+
+state 5
+
+    (1) property -> list optproperty .
+
+    $end            reduce using rule 1 (property -> list optproperty .)
+
+
+state 6
+
+    (2) optproperty -> empty .
+
+    $end            reduce using rule 2 (optproperty -> empty .)
+
+
+state 7
+
+    (3) optproperty -> property .
+
+    $end            reduce using rule 3 (optproperty -> property .)
+
+
+state 8
+
+    (4) list -> tuple opttuple .
+
+    LPAR            reduce using rule 4 (list -> tuple opttuple .)
+    $end            reduce using rule 4 (list -> tuple opttuple .)
+
+
+state 9
+
+    (5) opttuple -> COMMA . tuple opttuple
+    (7) tuple -> . LPAR NAME COMMA NAME optresname RPAR
+
+    LPAR            shift and go to state 4
+
+    tuple                          shift and go to state 12
+
+state 10
+
+    (6) opttuple -> empty .
+
+    LPAR            reduce using rule 6 (opttuple -> empty .)
+    $end            reduce using rule 6 (opttuple -> empty .)
+
+
+state 11
+
+    (7) tuple -> LPAR NAME . COMMA NAME optresname RPAR
+
+    COMMA           shift and go to state 13
+
+
+state 12
+
+    (5) opttuple -> COMMA tuple . opttuple
+    (5) opttuple -> . COMMA tuple opttuple
+    (6) opttuple -> . empty
+    (10) empty -> .
+
+    COMMA           shift and go to state 9
+    LPAR            reduce using rule 10 (empty -> .)
+    $end            reduce using rule 10 (empty -> .)
+
+    opttuple                       shift and go to state 14
+    empty                          shift and go to state 10
+
+state 13
+
+    (7) tuple -> LPAR NAME COMMA . NAME optresname RPAR
+
+    NAME            shift and go to state 15
+
+
+state 14
+
+    (5) opttuple -> COMMA tuple opttuple .
+
+    LPAR            reduce using rule 5 (opttuple -> COMMA tuple opttuple .)
+    $end            reduce using rule 5 (opttuple -> COMMA tuple opttuple .)
+
+
+state 15
+
+    (7) tuple -> LPAR NAME COMMA NAME . optresname RPAR
+    (8) optresname -> . COMMA NAME optresname
+    (9) optresname -> . empty
+    (10) empty -> .
+
+    COMMA           shift and go to state 16
+    RPAR            reduce using rule 10 (empty -> .)
+
+    optresname                     shift and go to state 17
+    empty                          shift and go to state 18
+
+state 16
+
+    (8) optresname -> COMMA . NAME optresname
+
+    NAME            shift and go to state 19
+
+
+state 17
+
+    (7) tuple -> LPAR NAME COMMA NAME optresname . RPAR
+
+    RPAR            shift and go to state 20
+
+
+state 18
+
+    (9) optresname -> empty .
+
+    RPAR            reduce using rule 9 (optresname -> empty .)
+
+
+state 19
+
+    (8) optresname -> COMMA NAME . optresname
+    (8) optresname -> . COMMA NAME optresname
+    (9) optresname -> . empty
+    (10) empty -> .
+
+    COMMA           shift and go to state 16
+    RPAR            reduce using rule 10 (empty -> .)
+
+    optresname                     shift and go to state 21
+    empty                          shift and go to state 18
+
+state 20
+
+    (7) tuple -> LPAR NAME COMMA NAME optresname RPAR .
+
+    COMMA           reduce using rule 7 (tuple -> LPAR NAME COMMA NAME optresname RPAR .)
+    LPAR            reduce using rule 7 (tuple -> LPAR NAME COMMA NAME optresname RPAR .)
+    $end            reduce using rule 7 (tuple -> LPAR NAME COMMA NAME optresname RPAR .)
+
+
+state 21
+
+    (8) optresname -> COMMA NAME optresname .
+
+    RPAR            reduce using rule 8 (optresname -> COMMA NAME optresname .)
+
